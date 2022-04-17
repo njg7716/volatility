@@ -232,6 +232,16 @@ def FreebsdProfileFactory(profpkg):
             """Loads up the system map data"""
             _, _, sysmapvar = parse_system_map(sysmapdata, 'kernel')
             self.sys_map.update(sysmapvar)
+        
+        def get_all_symbol_names(self, module = "kernel"):
+            symtable = self.sys_map
+
+            if module in symtable:
+                ret = symtable[module].keys()
+            else:
+                debug.error("get_all_symbol_names called on non-existent module")
+
+            return ret
 
         def get_symbol(self, sym_name, nm_type = '', module = 'kernel'):
             """Gets a symbol out of the profile
@@ -328,7 +338,8 @@ class proc(obj.CType):
         return process_as
 
     def get_proc_maps(self):
-       entry = self.p_vmspace.vm_map.header.next
+
+       entry = (self.p_vmspace.vm_map.header).next
 
        while entry.v() != self.p_vmspace.vm_map.header.v():
            if entry.eflags & 0x2 == 0:

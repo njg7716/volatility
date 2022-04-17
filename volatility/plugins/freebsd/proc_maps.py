@@ -46,7 +46,6 @@ class freebsd_proc_maps(freebsd_pslist.freebsd_pslist):
 
     def generator(self, data):
         for proc, entry in data:
-
             yield (0, [int(proc.p_pid),
                        str(proc.p_comm),
                        Address(entry.start),

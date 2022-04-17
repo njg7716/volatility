@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Volatility.  If not, see <http://www.gnu.org/licenses/>.
 #
-
+import struct
 import volatility.obj as obj
 import volatility.utils as utils
 import volatility.plugins.freebsd.common as freebsd_common
@@ -55,13 +55,13 @@ class freebsd_pslist(freebsd_common.AbstractFreebsdCommand):
                 yield proc
             proc = proc.p_list.le_next
 
-        addr = self.addr_space.profile.get_symbol('zombproc')
-        zombproc = obj.Object('proclist', offset = addr, vm = self.addr_space)
-        proc = zombproc.lh_first
-        while proc.v():
-            if not pidlist or proc.p_pid in pidlist:
-                yield proc
-            proc = proc.p_list.le_next
+        #addr = self.addr_space.profile.get_symbol('zombproc')
+        #zombproc = obj.Object('proclist', offset = addr, vm = self.addr_space)
+        #proc = zombproc.lh_first
+        #while proc.v():
+        #    if not pidlist or proc.p_pid in pidlist:
+        #        yield proc
+        #    proc = proc.p_list.le_next
 
     def unified_output(self, data):
         return TreeGrid([('Offset (V)', Address),
